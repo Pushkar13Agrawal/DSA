@@ -10,43 +10,30 @@
  */
 class Solution {
 public:
-ListNode* merge(ListNode* root , ListNode* root2){
-      ListNode* temp1=root;
-        ListNode* temp2=root2;
-        ListNode* dummy=new ListNode(-1);
-        ListNode* curr=dummy;
-        while(temp1!=NULL && temp2!=NULL){
-            if(temp1->val < temp2->val){
-                curr->next=temp1;
-              temp1=  temp1->next;
-            }
-            else {
-                curr->next=temp2;
-                temp2=temp2->next;
-            }
-           
-            curr=curr->next;
-           
-        }
-        
-        if(temp1!=NULL){
-            curr->next=temp1;
-        }
-        if(temp2!=NULL){
-            curr->next=temp2;
-        }
-        return dummy->next;
-  }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
 
-    if(lists.empty()) return NULL;
-
-    ListNode* ans = lists[0];
-
-    for(int i = 1; i < lists.size(); i++) {
-        ans = merge(ans, lists[i]);
+        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>,
+                       greater<pair<int, ListNode*>>>
+            pq;
+        for (int i = 0; i < lists.size(); i++) {
+            if (lists[i] != NULL) {
+                pq.push({lists[i]->val, lists[i]});
+            }
+        }
+        ListNode* dummy = new ListNode(-1);
+        ListNode* curr = dummy;
+        while (!pq.empty()) {
+            auto it = pq.top(); // stores the top of pq (which is min)
+            pq.pop();           // remove that min from pq
+            if (it.second->next !=
+                NULL) // this line checks if next exist of it or not if it does
+                      // not then dont push the next
+            {
+                pq.push({it.second->next->val, it.second->next});
+            }
+            curr->next = it.second;
+            curr = curr->next;
+        }
+        return dummy->next;
     }
-
-    return ans;
-}
 };
