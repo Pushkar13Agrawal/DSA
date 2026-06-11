@@ -33,7 +33,20 @@ public:
         }
         return dummy->next;
     }
-    ListNode* MS(ListNode* head) {
+
+    ListNode* mid(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head->next;
+
+        while (fast != NULL && fast->next != NULL) {
+
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow;
+    }
+
+    ListNode* sortList(ListNode* head) {
         if (head == NULL || head->next == NULL) {
             return head;
         }
@@ -42,21 +55,8 @@ public:
         ListNode* righthead = midd->next;
         midd->next = NULL;
 
-        lefthead = MS(lefthead);
-        righthead = MS(righthead);
+        lefthead = sortList(lefthead);
+        righthead = sortList(righthead);
         return Merge(lefthead, righthead);
     }
-    ListNode* mid(ListNode* head) {
-        ListNode* slow = head;
-        ListNode* fast = head;
-        ListNode* prev = NULL;
-        while (fast != NULL && fast->next != NULL) {
-            prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        return prev;
-    }
-
-    ListNode* sortList(ListNode* head) { return MS(head); }
 };
