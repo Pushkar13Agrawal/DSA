@@ -11,9 +11,7 @@ public:
             n=n/10;
         }
 
-        n=y;
-
-        if(n%(sum+product)==0){
+        if(y%(sum+product)==0){
             return true;
         }
 
